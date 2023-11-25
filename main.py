@@ -25,12 +25,22 @@ def download_video(url, output_path, start_time, end_time, video_title):
     return final_output_file
 
 if __name__ == '__main__':
+    st.title("YouTube Video Downloader")
+
+    default_start_time = time(0, 0)  # Default time interpreted as 0 minutes and 0 seconds
+    default_end_time = time(0, 0)
+    start_time = st.time_input("Start Time (Minutes:Seconds)", value=default_start_time)
+    end_time = st.time_input("End Time (Minutes:Seconds)", value=default_end_time)
+    
+    video_title = st.text_input('Video Title')
+
     url = st.text_input('YouTube URL')
-    if url:
+
+    if url and start_time and end_time and video_title:
         output_path = 'videos' 
         os.makedirs(output_path, exist_ok=True)
-        filepath = download_video(url, output_path)
-        with open(filepath,'rb') as f:
+        filepath = download_video(url, output_path, start_time, end_time, video_title)
+        with open(filepath, 'rb') as f:
             st.download_button(
                 label='Download video',
                 data=f,
